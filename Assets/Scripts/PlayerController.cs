@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
 
+    [SerializeField]private LayerMask solidObjectsLayer;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,12 +36,15 @@ public class PlayerController : MonoBehaviour
             {
                 anim.SetFloat("moveX", input.x);
                 anim.SetFloat("moveY", input.y);
-                //rb.velocity = new Vector2(input.x * moveSpeed, input.y * moveSpeed);
                 Vector2 targetPos = transform.position;
                 targetPos.x += input.x;
                 targetPos.y += input.y;
-                 
-                StartCoroutine(Move(targetPos));
+
+                if (IsWalkable(targetPos))
+                {
+                    StartCoroutine(Move(targetPos));
+                }
+                
             }
         }
         anim.SetBool("isMoving", isMoving);
@@ -54,6 +59,16 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = targetPos;
         isMoving = false;
+    }
+    private bool IsWalkable(Vector3 targetPos)
+    {
+        if (Physics2D.OverlapCircle(targetPos, .2f, solidObjectsLayer) != null)
+        {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
 }
