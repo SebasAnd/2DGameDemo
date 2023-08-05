@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
 
+    [SerializeField] private GameObject attackArea;
+
     [SerializeField]private LayerMask solidObjectsLayer;
 
     void Awake()
@@ -47,11 +49,26 @@ public class PlayerController : MonoBehaviour
                 
             }
         }
-        anim.SetBool("isMoving", isMoving);
+        if(Input.GetButtonUp("Attack")&& !isMoving)
+        {
+            anim.SetBool("isAttacking", false);
+            attackArea.SetActive(false);
+        }
+        if(Input.GetButtonDown("Attack") && !isMoving)
+        {
+            anim.SetBool("isAttacking", true);
+            attackArea.SetActive(true);
+        }else{
+            //anim.SetBool("isAttacking", false);
+            anim.SetBool("isMoving", isMoving);
+        }
+        
     }
     IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
+        anim.SetBool("isAttacking", false);
+        attackArea.SetActive(false);
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
