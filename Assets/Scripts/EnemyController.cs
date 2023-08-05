@@ -10,23 +10,21 @@ public class EnemyController : MonoBehaviour
     private bool canBeDamaged = true;
     Animator anim;
     [SerializeField]private LayerMask solidObjectsLayer;
-    // Start is called before the first frame update
+    private bool isReacting = false;
+    private Vector3 reactionDirection;
     void Start()
     {
         anim = GetComponent<Animator>();
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {        
-        if( collider && collider.gameObject.tag  == "Attack" && canBeDamaged)
+        if( collider && collider.gameObject.tag  == "Attack" && canBeDamaged )
         {            
             anim.Play("SlimeAttackReaction");
             StartCoroutine(DecrementHealth(1f));
             AttackReaction(collider.transform.position);
         }
     }
-    // Update is called once per frame
-
-
     public IEnumerator DecrementHealth(float damage)
     {
         canBeDamaged = false;        
@@ -36,19 +34,32 @@ public class EnemyController : MonoBehaviour
         }else{
             health -= damage;
         }
-        Debug.Log("enemy health = " + health);
-        yield return new WaitForSeconds(2f);
-        canBeDamaged = true;
-        anim.Play("SlimeEnemyIdle");
+        if(health > 0)
+        {
+            Debug.Log("enemy health = " + health);
+            yield return new WaitForSeconds(2f);
+            canBeDamaged = true;
+            anim.Play("SlimeEnemyIdle");
+        }else{
+            anim.Play("SlimeDeath");
+            StartCoroutine(Death());
+        }
+        
     }
 
     public void AttackReaction(Vector3 otherPosition)
     {
         float[] values = new float[] { -1.5f, -2.0f,-2.5f,1.5f,2.0f,2.5f };
-        Vector3 limit = transform.position = new Vector3(otherPosition.x + values[Random.Range(0, values.Length - 1)], otherPosition.y + values[Random.Range(0, values.Length - 1)], transform.position.z);// + values[Random.Range(0,values.Length-1)] * transform.position; 
+        Vector3 limit  = new Vector3(otherPosition.x + values[Random.Range(0, values.Length - 1)], otherPosition.y + values[Random.Range(0, values.Length - 1)], transform.position.z);// + values[Random.Range(0,values.Length-1)] * transform.position; 
+        reactionDirection = limit;
         if(IsAvaliablePosition(limit))
         {
-            transform.position = limit;
+            if(health > 0)
+            {
+                transform.position = limit;
+                isReacting = true;
+            }
+            
         }else{
             AttackReaction(otherPosition);
         }
@@ -65,8 +76,31 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    IEnumerator Reaction()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, reactionDirection, Time.deltaTime * 0.0001f);
+        yield return new WaitForSeconds(1f);
+    }
+    IEnumerator Death()
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(this.gameObject);
+    }
+    
+
     void Update()
     {
+        if(isReacting && health > 0)
+        {
+            if(transform.position != reactionDirection)
+            {
+                Reaction();
+                
+            }else{
+                isReacting = false;
+            }
+            
+        }
         
     }
 }

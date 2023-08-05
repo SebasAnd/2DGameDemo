@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 input;
 
-    private Rigidbody2D rb;
-
     private Animator anim;
 
     [SerializeField] private GameObject[] attackPoints;
@@ -20,7 +18,6 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
 
