@@ -16,8 +16,7 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
     }
     private void OnTriggerEnter2D(Collider2D collider)
-    {
-        Debug.Log(collider.gameObject.name);
+    {        
         if( collider && collider.gameObject.tag  == "Attack" && canBeDamaged)
         {            
             anim.Play("SlimeAttackReaction");
@@ -45,7 +44,8 @@ public class EnemyController : MonoBehaviour
 
     public void AttackReaction(Vector3 otherPosition)
     {
-        Vector3 limit = transform.position = otherPosition + Random.Range(-0.5f,0.5f) *transform.position; 
+        float[] values = new float[] { -1.5f, -2.0f,-2.5f,1.5f,2.0f,2.5f };
+        Vector3 limit = transform.position = new Vector3(otherPosition.x + values[Random.Range(0, values.Length - 1)], otherPosition.y + values[Random.Range(0, values.Length - 1)], transform.position.z);// + values[Random.Range(0,values.Length-1)] * transform.position; 
         if(IsAvaliablePosition(limit))
         {
             transform.position = limit;

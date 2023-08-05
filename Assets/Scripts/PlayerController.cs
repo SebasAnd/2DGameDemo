@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
 
-    [SerializeField] private GameObject attackArea;
+    [SerializeField] private GameObject[] attackPoints;
 
     [SerializeField]private LayerMask solidObjectsLayer;
 
@@ -52,13 +52,30 @@ public class PlayerController : MonoBehaviour
         if(Input.GetButtonUp("Attack")&& !isMoving)
         {
             anim.SetBool("isAttacking", false);
-            attackArea.SetActive(false);
+            HidePoints();
         }
         if(Input.GetButtonDown("Attack") && !isMoving)
         {
             anim.SetBool("isAttacking", true);
-            attackArea.SetActive(true);
-        }else{
+            if (anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "RightIdle")
+            {
+                ShowPoint(2);
+            }
+            if (anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "UpIdle")
+            {
+                ShowPoint(0);
+            }
+            if (anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "LeftIdle")
+            {
+                ShowPoint(3);
+            }
+            if (anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "DownIdle")
+            {
+                ShowPoint(1);
+            }
+            
+        }
+        else{
             //anim.SetBool("isAttacking", false);
             anim.SetBool("isMoving", isMoving);
         }
@@ -68,7 +85,7 @@ public class PlayerController : MonoBehaviour
     {
         isMoving = true;
         anim.SetBool("isAttacking", false);
-        attackArea.SetActive(false);
+        HidePoints();
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
@@ -76,6 +93,17 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = targetPos;
         isMoving = false;
+    }
+    private void HidePoints()
+    {
+        for(int i=0; i < attackPoints.Length; i++)
+        {
+            attackPoints[i].SetActive(false);
+        }
+    }
+    private void ShowPoint(int index)
+    {
+        attackPoints[index].SetActive(true);      
     }
     private bool IsWalkable(Vector3 targetPos)
     {
