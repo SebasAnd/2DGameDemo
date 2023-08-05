@@ -112,5 +112,19 @@ public class PlayerController : MonoBehaviour
             return true;
         }
     }
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Bullet")
+        {
+            anim.SetBool("isHurt", true);
+            
+            StartCoroutine(WaitHurt());
+        }
+    }
+    IEnumerator WaitHurt()
+    {
+        yield return new WaitForSeconds(.5f);
+        anim.SetBool("isHurt", false);
+        
+    }
 }
