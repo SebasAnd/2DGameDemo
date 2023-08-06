@@ -6,9 +6,10 @@ public class AttackArea : MonoBehaviour
 {
     [SerializeField] private GameObject origin;
     [SerializeField] private GameObject objective;
+    [SerializeField] private GameObject startPoint;
     [SerializeField] private GameObject ammo;
     private bool stillInArea = false;
-    [SerializeField] private float period = 3f;
+    [SerializeField] private float period = 2f;
     private void OnTriggerEnter2D(Collider2D collider)
     {  
            
@@ -35,10 +36,10 @@ public class AttackArea : MonoBehaviour
 
     public void BulletInstancer()
     {
-        if (stillInArea)
+        if (stillInArea && origin.transform.childCount == 0)
         {
             ammo.GetComponent<BulletBehaviour>().target = objective;
-            GameObject bullet = Instantiate(ammo, transform);
+            GameObject bullet = Instantiate(ammo,startPoint.transform.position,Quaternion.Euler(0f,0f,0f), origin.transform);
         }
             
     }

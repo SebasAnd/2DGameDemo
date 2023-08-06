@@ -10,7 +10,7 @@ public class BulletBehaviour : MonoBehaviour
 
     private Rigidbody2D rb;
 
-    [SerializeField] private float bulletLife = 2f;
+    [SerializeField] private float bulletLife = 1f;
 
 
 
@@ -40,6 +40,6 @@ public class BulletBehaviour : MonoBehaviour
     void Update()
     {
         //transform.position = Vector2.MoveTowards(transform.position, position, Time.deltaTime * bulletSpeed);
-        rb.velocity= position * 0.3f;   
+        rb.velocity= position * 0.5f;   
     }
 }

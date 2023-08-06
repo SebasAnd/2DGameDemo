@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator WaitHurt()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.2f);
         anim.SetBool("isHurt", false);
         
     }
