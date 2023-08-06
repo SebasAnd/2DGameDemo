@@ -43,8 +43,7 @@ public class EnemyController : MonoBehaviour
             healthBar.fillAmount = health / maxHealth; 
         }
         if(health > 0)
-        {
-            Debug.Log("enemy health = " + health);
+        {            
             allBar.SetActive(true);
             yield return new WaitForSeconds(2f);
             canBeDamaged = true;
