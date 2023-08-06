@@ -11,8 +11,7 @@ public class BulletBehaviour : MonoBehaviour
     private Rigidbody2D rb;
 
     [SerializeField] private float bulletLife = 1f;
-
-
+    public float damage;
 
     void  Start()
     {

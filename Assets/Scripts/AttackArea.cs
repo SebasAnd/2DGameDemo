@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class AttackArea : MonoBehaviour
 {
-    [SerializeField] private GameObject origin;
+    public GameObject origin;
     [SerializeField] private GameObject objective;
     [SerializeField] private GameObject startPoint;
     [SerializeField] private GameObject ammo;
     private bool stillInArea = false;
     [SerializeField] private float period = 2f;
+    public bool combatNearby = false;
     private void OnTriggerEnter2D(Collider2D collider)
     {  
            
@@ -19,6 +20,7 @@ public class AttackArea : MonoBehaviour
             //Debug.Log(collider.gameObject.tag);
             stillInArea = true;
             InvokeRepeating("BulletInstancer", 0f, period);
+            combatNearby = true;
             
         }
         
@@ -30,6 +32,7 @@ public class AttackArea : MonoBehaviour
             //Objective = collider.gameObject;
             //InvokeRepeating("BulletInstancer", .5f, 3f);
             stillInArea = false;
+            combatNearby = false;
         }
         
     }

@@ -9,24 +9,29 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] private Image healthBar;
     [SerializeField] private GameObject allBar;
+    [SerializeField] private TMPro.TMP_Text damageText;
+    [SerializeField] private GameObject damageCanvas;
     private bool canBeDamaged = true;
     Animator anim;
     [SerializeField]private LayerMask solidObjectsLayer;
     private bool isReacting = false;
     private Vector3 reactionDirection;
     private float maxHealth = 10f;
+    public AttackArea attackArea;
     void Start()
     {
         anim = GetComponent<Animator>();
         maxHealth = health;
         allBar.SetActive(false);
+        damageCanvas.SetActive(false);
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {        
         if( collider && collider.gameObject.tag  == "Attack" && canBeDamaged )
-        {            
+        {
+            PlayerDamage playerDamage = collider.gameObject.GetComponent<PlayerDamage>();
             anim.Play("SlimeAttackReaction");
-            StartCoroutine(DecrementHealth(1f));
+            StartCoroutine(DecrementHealth(playerDamage.player.damage));
             AttackReaction(collider.transform.position);
         }
     }
@@ -38,14 +43,18 @@ public class EnemyController : MonoBehaviour
             health = 0;
         }else{
             health -= damage;
+            damageText.text = "-"+damage;
             healthBar.fillAmount = health / maxHealth; 
         }
         if(health > 0)
         {            
             allBar.SetActive(true);
-            yield return new WaitForSeconds(2f);
+            damageCanvas.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            damageCanvas.SetActive(false);
+            yield return new WaitForSeconds(1.5f);
             canBeDamaged = true;
-            allBar.SetActive(false);
+            allBar.SetActive(false);            
             anim.Play("SlimeEnemyIdle");
         }else{
             anim.Play("SlimeDeath");

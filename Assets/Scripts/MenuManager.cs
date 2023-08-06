@@ -93,7 +93,7 @@ public class MenuManager : MonoBehaviour
     }
     void SliderVolumeChange(Slider slider)
     {
-        music.volume = slider.value / 10;
+        AudioListener.volume = slider.value/10;
         volumeText.text = ""+slider.value;
     }
     void ValueChange(TMPro.TMP_Dropdown dropdown)

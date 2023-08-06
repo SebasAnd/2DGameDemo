@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b10531c086bebda488098aa363e92358, type: 3}
   m_Name: SwordOfElder
   m_EditorClassIdentifier: 
+  Attack: 5
+  Life: 2
+  sprite: {fileID: 21300000, guid: 1d2c816c01446a74db767c595f1a3f7c, type: 3}
