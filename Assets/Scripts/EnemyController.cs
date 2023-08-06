@@ -7,8 +7,6 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private float health = 10f;
 
-    [SerializeField] private float EnemyDamage = 1f;
-    [SerializeField] private float runSpeed = 3f;
     [SerializeField] private Image healthBar;
     [SerializeField] private GameObject allBar;
     private bool canBeDamaged = true;
