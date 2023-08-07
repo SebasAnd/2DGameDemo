@@ -43,7 +43,7 @@ public class EnemyController : MonoBehaviour
             health = 0;
         }else{
             health -= damage;
-            damageText.text = "-"+damage;
+            damageText.text = "-"+damage +" HP";
             healthBar.fillAmount = health / maxHealth; 
         }
         if(health > 0)
