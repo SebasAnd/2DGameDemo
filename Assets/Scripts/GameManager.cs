@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject enemies;
     [SerializeField] private GameObject sceneEnemies;
     [SerializeField] private GameObject origin;
+    public GameObject consumableItemsContainer;
+    public GameObject[] generalItems;
+
 
 
     private void Awake()

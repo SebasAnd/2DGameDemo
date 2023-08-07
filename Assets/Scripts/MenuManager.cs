@@ -29,7 +29,23 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         resolutionOptions = new string[] { "1920*1080", "800*600", "640*480" };
-        AddListeners();   
+        
+        AddListeners();
+        if (PlayerPrefs.GetFloat("Resolution") != 0)
+        {
+            resolution.value = PlayerPrefs.GetFloat("Resolution");
+        }
+        quality.value = PlayerPrefs.GetInt("Quality");
+        if (PlayerPrefs.GetFloat("Volume") == 0)
+        {
+            volume.value = 10;
+        }
+        else {
+            volume.value = PlayerPrefs.GetFloat("Volume");
+        }
+
+        
+        
     }
 
     void AddListeners()
@@ -90,11 +106,13 @@ public class MenuManager : MonoBehaviour
             Screen.SetResolution(1920, 1080, true);
             resolutionText.text = "1920*1080";
         }
+        PlayerPrefs.SetFloat("Resolution", slider.value);
     }
     void SliderVolumeChange(Slider slider)
     {
         AudioListener.volume = slider.value/10;
         volumeText.text = ""+slider.value;
+        PlayerPrefs.SetFloat("Volume", slider.value);
     }
     void ValueChange(TMPro.TMP_Dropdown dropdown)
     {
@@ -115,6 +133,7 @@ public class MenuManager : MonoBehaviour
         {
             QualitySettings.SetQualityLevel(1, true);
         }
+        PlayerPrefs.SetInt("Quality", dropdown.value);
     }
 
     // Update is called once per frame

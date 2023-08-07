@@ -99,7 +99,10 @@ public class EnemyController : MonoBehaviour
     }
     IEnumerator Death()
     {
+        GameManager gm = GameManager.instance;
         yield return new WaitForSeconds(1f);
+         int selected = Random.Range(0, gm.generalItems.Length);
+        Instantiate(gm.generalItems[selected],transform.position,Quaternion.Euler(0f,0f,0f),gm.consumableItemsContainer.transform);
         Destroy(this.gameObject);
     }
     

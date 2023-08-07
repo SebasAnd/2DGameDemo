@@ -25,6 +25,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float maxHealth = 10f;
     [SerializeField] float currentHealth = 10f;
 
+
+    [SerializeField] GameObject dmgNotification;
+    [SerializeField] TMPro.TMP_Text dmgNotificationText;
+
+    [SerializeField] GameObject healthNotification;
+    [SerializeField] TMPro.TMP_Text healthNotificationText;
+
     [SerializeField] private GameObject deathInterface;
 
     private Vector3 initialPosition;
@@ -37,6 +44,8 @@ public class PlayerController : MonoBehaviour
         }
         damagetext.text = "+" + damage;
         initialPosition = transform.position;
+        healthNotification.SetActive(false);
+        dmgNotification.SetActive(false);
 
     }
 
@@ -140,6 +149,7 @@ public class PlayerController : MonoBehaviour
             BulletBehaviour enemy = collision.GetComponent<BulletBehaviour>();
             anim.SetBool("isHurt", true);
             currentHealth -= enemy.damage;
+            StartCoroutine(HealthNotification(-enemy.damage));
             StartCoroutine(WaitHurt());
             Health.fillAmount = currentHealth / maxHealth;
         }
@@ -160,6 +170,8 @@ public class PlayerController : MonoBehaviour
         transform.position = initialPosition;
         currentHealth = maxHealth;
         Health.fillAmount = currentHealth / maxHealth;
+        damage = 1;
+        damagetext.text = "+" + damage;
         anim.SetBool("isDeath", false);
         deathInterface.SetActive(false);
         StartCoroutine(Rebirth());
@@ -174,7 +186,74 @@ public class PlayerController : MonoBehaviour
     IEnumerator WaitHurt()
     {
         yield return new WaitForSeconds(.2f);
-        anim.SetBool("isHurt", false);
+        anim.SetBool("isHurt", false);        
+    }
+    public void AddHealth(float amount)
+    {
+        if (currentHealth < maxHealth)
+        {
+            currentHealth += amount;
+            StartCoroutine(HealthNotification(amount));
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+
+            Health.fillAmount = currentHealth / maxHealth;
+        }
         
+    }
+    public void AddDamage(float amount)
+    {
+        damage += amount;
+        damagetext.text = "+" + damage;
+        StartCoroutine(DamageNotification(amount));
+
+    }
+    public float ReturnHealth(string required)
+    {
+        if (required == "current")
+        {
+            return currentHealth;
+        }
+        else {
+            return maxHealth;
+        }
+        
+    }
+    IEnumerator HealthNotification(float value)
+    {
+        if (value > 0)
+        {
+            healthNotificationText.text = "+" + value;
+            healthNotificationText.overrideColorTags = true;
+            healthNotificationText.color = new Color(0, 0, 0, 255);
+            healthNotification.SetActive(true);
+            yield return new WaitForSeconds(.5f);
+            healthNotification.SetActive(false);
+
+        }
+        else {
+            healthNotificationText.text ="" + value;
+            healthNotificationText.overrideColorTags = true;
+            healthNotificationText.color = new Color(255, 0, 0, 255);
+            healthNotification.SetActive(true);
+            yield return new WaitForSeconds(.5f);
+            healthNotification.SetActive(false);
+        }
+        
+    }
+
+    IEnumerator DamageNotification(float value)
+    {
+        if (value > 0)
+        {
+            dmgNotificationText.text = "+" + value;
+            dmgNotification.SetActive(true);
+            yield return new WaitForSeconds(.5f);
+            dmgNotification.SetActive(false);
+
+        }
+
     }
 }
