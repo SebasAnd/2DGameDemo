@@ -23,6 +23,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text volumeText;
     [SerializeField] private AudioSource music;
 
+
+    [SerializeField] private bool useScape = true;
+
     private string[] resolutionOptions;
 
 
@@ -139,7 +142,7 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel") && useScape)
         {
             if (Time.timeScale == 0)
             {
