@@ -225,7 +225,7 @@ public class PlayerController : MonoBehaviour
     {
         if (value > 0)
         {
-            healthNotificationText.text = "+" + value;
+            healthNotificationText.text = "+" + value + " HP";
             healthNotificationText.overrideColorTags = true;
             healthNotificationText.color = new Color(0, 0, 0, 255);
             healthNotification.SetActive(true);
@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour
 
         }
         else {
-            healthNotificationText.text ="" + value;
+            healthNotificationText.text ="" + value + " HP";
             healthNotificationText.overrideColorTags = true;
             healthNotificationText.color = new Color(255, 0, 0, 255);
             healthNotification.SetActive(true);
@@ -248,7 +248,7 @@ public class PlayerController : MonoBehaviour
     {
         if (value > 0)
         {
-            dmgNotificationText.text = "+" + value;
+            dmgNotificationText.text = "+" + value + " DMG";
             dmgNotification.SetActive(true);
             yield return new WaitForSeconds(.5f);
             dmgNotification.SetActive(false);

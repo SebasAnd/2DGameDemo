@@ -31,12 +31,15 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        resolutionOptions = new string[] { "1920*1080", "800*600", "640*480" };
+        resolutionOptions = new string[] { "1366*768","1920*1080","2560*1440"};
         
         AddListeners();
         if (PlayerPrefs.GetFloat("Resolution") != 0)
         {
             resolution.value = PlayerPrefs.GetFloat("Resolution");
+        }
+        else {
+            resolution.value = 1;
         }
         quality.value = PlayerPrefs.GetInt("Quality");
         if (PlayerPrefs.GetFloat("Volume") == 0)
@@ -96,18 +99,18 @@ public class MenuManager : MonoBehaviour
         
         if (slider.value == 1)
         {
-            Screen.SetResolution(640, 480, true);
-            resolutionText.text = "640*480";
+            Screen.SetResolution(1366, 768, true);
+            resolutionText.text = resolutionOptions[0];
         }
         if (slider.value == 2)
         {
-            Screen.SetResolution(800, 600, true);
-            resolutionText.text = "800*600";
+            Screen.SetResolution(1920, 1080, true);
+            resolutionText.text = resolutionOptions[1];
         }
         if (slider.value == 3)
         {
-            Screen.SetResolution(1920, 1080, true);
-            resolutionText.text = "1920*1080";
+            Screen.SetResolution(2560, 1440, true);
+            resolutionText.text = resolutionOptions[2];
         }
         PlayerPrefs.SetFloat("Resolution", slider.value);
     }
