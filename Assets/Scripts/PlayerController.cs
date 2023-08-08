@@ -182,10 +182,11 @@ public class PlayerController : MonoBehaviour
     {
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         transform.position = initialPosition;
+        maxHealth = 10f;
         currentHealth = maxHealth;
         Health.fillAmount = currentHealth / maxHealth;
         damage = 1;
-        damagetext.text = "+" + damage;
+        UpdateStatsValues();
         anim.SetBool("isDeath", false);
         deathInterface.SetActive(false);
         StartCoroutine(Rebirth());
@@ -195,7 +196,10 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         deathInterface.SetActive(false);
-        GameManager.instance.RefreshEnemies();
+        gameManager.RefreshEnemies();
+        gameManager.RefreshItems();
+        currentHealth = maxHealth;
+        gameManager.UpdateStats();
     }
     IEnumerator WaitHurt()
     {
@@ -218,6 +222,12 @@ public class PlayerController : MonoBehaviour
             UpdateHealthText();
         }
         
+    }
+    public void UpdateStatsValues()
+    {
+        Health.fillAmount = currentHealth / maxHealth;
+        damagetext.text = "+" + damage;
+        UpdateHealthText();
     }
     public void AddDamage(float amount)
     {

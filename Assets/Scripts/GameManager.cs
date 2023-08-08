@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject consumableItemsContainer;
     [SerializeField] public GameObject inventoryInterface;
     [SerializeField] private Button inventoryCloseButton;
+    [SerializeField] private GameObject playerObject;
     [SerializeField] private PlayerController player;
 
     [SerializeField] private TMPro.TMP_Text damageInventoryIndicator;
@@ -25,10 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject itemNotification;
     [SerializeField] private TMPro.TMP_Text itemNotificationText;
 
-    private float initialMaxHealthValue;
-    private float initialMaxDamageValue;
-
-
+    [SerializeField] private GameObject worldItemsscene;
+    [SerializeField] private GameObject worldItems;
     private void Awake()
     {
         if (instance == null)
@@ -39,8 +38,7 @@ public class GameManager : MonoBehaviour
         inventoryCloseButton.onClick.AddListener(ShowOrHideInventory);
         UpdateStats();
         itemNotification.SetActive(false);
-        initialMaxDamageValue = player.damage;
-        initialMaxHealthValue = player.maxHealth;
+        player = playerObject.GetComponent<PlayerController>();
     }
 
     public void ShowOrHideInventory()
@@ -66,6 +64,29 @@ public class GameManager : MonoBehaviour
         }
 
     }
+    public void RefreshItems()
+    {
+        Destroy(worldItemsscene);
+        GameObject newWItems = Instantiate(worldItems);
+        worldItemsscene = newWItems;
+
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].transform.childCount > 0)
+            {
+                Destroy(inventorySlots[i].transform.GetChild(0).gameObject);
+            }
+        }
+
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+            if (equipmentSlots[i].transform.childCount > 0)
+            {
+                Destroy(equipmentSlots[i].transform.GetChild(0).gameObject);
+            }
+        }
+
+    }
 
     public void AddItemToInventory(GameObject gameObject)
     {
@@ -87,9 +108,13 @@ public class GameManager : MonoBehaviour
 
     public void UpdatePlayerStats(float health,float damage)
     {
-        player.maxHealth += health;
-        player.AddHealth(0f);
-        player.AddDamage(damage);
+        //player.maxHealth += health;
+        playerObject.GetComponent<PlayerController>().maxHealth += health;
+        playerObject.GetComponent<PlayerController>().damage += damage;
+        UpdateStats();
+        playerObject.GetComponent<PlayerController>().UpdateStatsValues();
+        //player.AddHealth(0f);
+        //player.AddDamage(damage);
     }
 
     public void ShowItemNotication(string name)

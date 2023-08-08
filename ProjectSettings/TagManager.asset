@@ -10,6 +10,7 @@ TagManager:
   - AttackArea
   - InventorySlot
   - InventoryItem
+  - EquipmentSlot
   layers:
   - Default
   - TransparentFX
