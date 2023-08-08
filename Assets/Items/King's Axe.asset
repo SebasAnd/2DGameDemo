@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b10531c086bebda488098aa363e92358, type: 3}
-  m_Name: SwordOfElder
+  m_Name: King's Axe
   m_EditorClassIdentifier: 
-  damage: 2
+  damage: 4
   maxHP: 0
-  name: Sword of Elder
-  sprite: {fileID: 21300000, guid: 1d2c816c01446a74db767c595f1a3f7c, type: 3}
+  name: King's Axe
+  sprite: {fileID: 21300000, guid: a398b32e25009414d97c57583b758dd0, type: 3}

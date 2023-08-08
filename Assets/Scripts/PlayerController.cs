@@ -22,8 +22,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Image Health;
     [SerializeField] private TMPro.TMP_Text damagetext;
-    [SerializeField] float maxHealth = 10f;
-    [SerializeField] float currentHealth = 10f;
+    [SerializeField] private TMPro.TMP_Text healthText;
+    [SerializeField] public float maxHealth = 10f;
+    [SerializeField] public float currentHealth = 10f;
 
 
     [SerializeField] GameObject dmgNotification;
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TMPro.TMP_Text healthNotificationText;
 
     [SerializeField] private GameObject deathInterface;
+
+    GameManager gameManager;
 
     private Vector3 initialPosition;
     void Awake()
@@ -47,6 +50,11 @@ public class PlayerController : MonoBehaviour
         healthNotification.SetActive(false);
         dmgNotification.SetActive(false);
 
+    }
+    private void Start()
+    {
+        gameManager = GameManager.instance;
+        UpdateHealthText();
     }
 
     // Update is called once per frame
@@ -108,6 +116,10 @@ public class PlayerController : MonoBehaviour
         
         
     }
+    public void UpdateHealthText()
+    {
+        healthText.text = currentHealth + "/" + maxHealth + " HP";
+    }
     IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
@@ -149,6 +161,8 @@ public class PlayerController : MonoBehaviour
             BulletBehaviour enemy = collision.GetComponent<BulletBehaviour>();
             anim.SetBool("isHurt", true);
             currentHealth -= enemy.damage;
+            UpdateHealthText();
+            gameManager.UpdateStats();
             StartCoroutine(HealthNotification(-enemy.damage));
             StartCoroutine(WaitHurt());
             Health.fillAmount = currentHealth / maxHealth;
@@ -198,16 +212,19 @@ public class PlayerController : MonoBehaviour
             {
                 currentHealth = maxHealth;
             }
-
+            
             Health.fillAmount = currentHealth / maxHealth;
+            gameManager.UpdateStats();
+            UpdateHealthText();
         }
         
     }
     public void AddDamage(float amount)
     {
         damage += amount;
+        gameManager.UpdateStats();
         damagetext.text = "+" + damage;
-        StartCoroutine(DamageNotification(amount));
+        StartCoroutine(DamageNotification(amount));        
 
     }
     public float ReturnHealth(string required)

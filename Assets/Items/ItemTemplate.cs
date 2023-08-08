@@ -6,8 +6,10 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "Item", menuName = "Item/ItemObject", order = 1)]
 public class ItemTemplate : ScriptableObject
 {
-    public float Attack;
-    public float Life;
+    public float damage;
+    public float maxHP;
+
+    public string name;
 
     public Sprite sprite;
 }

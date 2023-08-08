@@ -8,6 +8,8 @@ TagManager:
   - Attack
   - Bullet
   - AttackArea
+  - InventorySlot
+  - InventoryItem
   layers:
   - Default
   - TransparentFX
